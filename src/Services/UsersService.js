@@ -16,6 +16,19 @@ class UsersService {
 
     };
 
+    async logUser(username){
+
+        const data = await client.query('SELECT * FROM users WHERE username = $1', [username]);
+
+        if (data.rowCount) {
+
+            return data.rows[0]
+        }
+
+        return undefined
+
+    };
+
 
 
 

@@ -3,8 +3,8 @@ const { json } = require('express');
 const express = require('express');
 require('dotenv').config()
 const usersRouter = require('./Routes/UsersRouter');
-const articlesRouter = require ('./Routes/ArticlesRouter');
-const commentairesRouter = require ('./Routes/CommentairesRouter');
+const articlesRouter = require('./Routes/ArticlesRouter');
+const commentairesRouter = require('./Routes/CommentairesRouter');
 
 
 
@@ -41,9 +41,8 @@ app.use('/api/users', usersRouter);
 
 app.all('*', function (req, res) {
     res.status(404).end("not found");
-  });
+});
 // ecoute le port 8000
-app.listen(port, () =>
-{
+app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`)
 })
