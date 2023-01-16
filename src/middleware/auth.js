@@ -1,4 +1,4 @@
-const JWT = require('json-web-token');
+const jwt = require('jsonwebtoken');
 const accessTokenSecret = 'youraccesstokensecret';
 
 
@@ -9,7 +9,7 @@ const authenticateJWT = (req, res, next) => {
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
-        JWT.verify(token, accessTokenSecret, (err, token) => {
+        jwt.verify(token, accessTokenSecret, (err, token) => {
             if (err) {
                 return res.sendStatus(403);
             }
