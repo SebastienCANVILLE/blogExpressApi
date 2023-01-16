@@ -1,6 +1,12 @@
 // imports
+const { json } = require('express');
 const express = require('express');
 require('dotenv').config()
+const usersRouter = require('./Routes/UsersRouter');
+const articlesRouter = require ('./Routes/ArticlesRouter');
+const commentairesRouter = require ('./Routes/CommentairesRouter');
+
+
 
 // declarations
 const app = express();
@@ -28,11 +34,14 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/api/tickets', commentairesRouter);
-app.use('/api/tickets', articlesRouter);
+//app.use('/api/commentaires', commentairesRouter);
+//app.use('/api/articles', articlesRouter);
 app.use('/api/users', usersRouter);
 
 
+app.all('*', function (req, res) {
+    res.status(404).end("not found");
+  });
 // ecoute le port 8000
 app.listen(port, () =>
 {
