@@ -45,11 +45,11 @@ class UsersControllers {
     async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
-
+        
         try {
 
             const user = await userService.logUser(username); 
-console.log(user);
+
             if (!user) {  // si l'identifiant est incorrect
                 res.status(404).json({ 
                     status: "fail",

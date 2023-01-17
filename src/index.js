@@ -6,8 +6,6 @@ const usersRouter = require('./Routes/UsersRouter');
 const articlesRouter = require('./Routes/ArticlesRouter');
 const commentairesRouter = require('./Routes/CommentairesRouter');
 
-
-
 // declarations
 const app = express();
 const port = 8000;
@@ -34,7 +32,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-//app.use('/api/commentaires', commentairesRouter);
+app.use('/api/commentaires', commentairesRouter);
 //app.use('/api/articles', articlesRouter);
 app.use('/api/users', usersRouter);
 
