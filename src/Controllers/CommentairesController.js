@@ -9,12 +9,12 @@ const commentairesService = new CommentairesService();
 
 class CommentairesController {
 
-async createCommentaire(req, res) {
+    async createCommentaire(req, res) {
 
-        const message = req.body.message;
+        const commentaire = req.body.commentaire;
         const userId = req.userId;
 
-        if (typeof message !== 'string') {
+        if (typeof commentaire !== 'string') {
             res.status(400).json({
                 status: 'FAIL',
                 data: undefined,
@@ -42,6 +42,40 @@ async createCommentaire(req, res) {
                 message: "Erreur de status"
             });
 
+        }
+    };
+
+    async getCommentaire(req, res) {
+        
+        const id = req.params.id;
+
+        try {
+            const data = await client.query.getAllCommentaryByArticle(article_id);
+
+            if (data.rowCount > 0) {
+                res.status(200).json({
+                    status: "OK",
+                    data: data.rows[0],
+                    message: "Voici les commentaires de l'article",
+                });
+
+                return;
+            }
+
+            res.status(404).json({
+                status: "FAIL",
+                data: undefined,
+                message: "Il n'y a pas de commentaires !",
+            });
+
+
+        } catch (err) {
+            console.log(err.stack);
+            res.status(404).json({
+                status: "FAIL",
+                data: undefined,
+                message: "erreur serveur",
+            });
         }
     };
 

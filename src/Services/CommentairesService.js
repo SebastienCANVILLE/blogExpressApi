@@ -16,6 +16,19 @@ class CommentairesService {
 
     };
 
+    async getAllCommentaryByArticle(article_id)
+    {
+        
+        const data = await client.query('SELECT * FROM commentaires WHERE article_id = $1', [article_id]);
+        
+        if (data.rowCount) {
+
+            return data.rows[0];
+        }
+
+        return undefined
+    }
+
 
 
 }
