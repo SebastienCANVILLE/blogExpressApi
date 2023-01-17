@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS public.articles;
 CREATE TABLE IF NOT EXISTS public.articles
 (
     id serial NOT NULL,
-    message text COLLATE pg_catalog."default" NOT NULL,
+    message text NOT NULL,
     create_at date DEFAULT CURRENT_DATE,
     delete_at date DEFAULT CURRENT_DATE,
     user_id integer NOT NULL,
@@ -20,22 +20,11 @@ DROP TABLE IF EXISTS public.commentaires;
 CREATE TABLE IF NOT EXISTS public.commentaires
 (
     id serial NOT NULL,
-    commentaire text COLLATE pg_catalog."default" NOT NULL,
+    commentaire text NOT NULL,
     create_at date DEFAULT CURRENT_DATE,
     delete_at date DEFAULT CURRENT_DATE,
     user_id integer NOT NULL,
-    article_id integer NOT NULL,
-    CONSTRAINT commentaires_pkey PRIMARY KEY (id)
-);
-
-DROP TABLE IF EXISTS public.users;
-
-CREATE TABLE IF NOT EXISTS public.users
-(
-    id serial NOT NULL,
-    username character varying COLLATE pg_catalog."default" NOT NULL,
-    password character varying COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT users_pkey PRIMARY KEY (id)
+    PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS public.articles
@@ -47,7 +36,7 @@ ALTER TABLE IF EXISTS public.articles
 
 
 ALTER TABLE IF EXISTS public.commentaires
-    ADD CONSTRAINT commentaires_user_id_fkey FOREIGN KEY (user_id)
+    ADD FOREIGN KEY (user_id)
     REFERENCES public.users (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
@@ -55,7 +44,7 @@ ALTER TABLE IF EXISTS public.commentaires
 
 
 ALTER TABLE IF EXISTS public.commentaires
-    ADD FOREIGN KEY (article_id)
+    ADD FOREIGN KEY (id)
     REFERENCES public.articles (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION

@@ -45,7 +45,7 @@ class UsersControllers {
     async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
-        console.log('REQ USER ID', req.userId);
+                console.log('REQ USER ID', req.userId);
 
         try {
 
