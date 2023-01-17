@@ -18,7 +18,11 @@ const authenticateJWT = (req, res, next) => {
             next();
         });
     } else {
-        res.sendStatus(401);
+        res.status(403).json({
+            status: "FAIL",
+            data: undefined,
+            message: "Veuillez vous authentifier"
+            });
     }
 
 };

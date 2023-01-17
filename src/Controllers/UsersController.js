@@ -45,11 +45,12 @@ class UsersControllers {
     async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
+        console.log('REQ USER ID', req.userId);
 
         try {
 
             const user = await userService.logUser(username); 
-console.log(user);
+console.log({user});
             if (!user) {  // si l'identifiant est incorrect
                 res.status(404).json({ 
                     status: "fail",
@@ -62,7 +63,7 @@ console.log(user);
             
             bcrypt.compare(password, user.password, (err, result) => { 
 
-                const accessToken = jwt.sign({ userId: user.user_id }, accessTokenSecret); 
+                const accessToken = jwt.sign({ userId: user.id }, accessTokenSecret); 
 
                 if (result === true) { 
                     res.status(200).json({

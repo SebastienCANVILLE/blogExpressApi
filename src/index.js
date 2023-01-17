@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
 });
 
 //app.use('/api/commentaires', commentairesRouter);
-//app.use('/api/articles', articlesRouter);
+app.use('/api/articles', articlesRouter);
 app.use('/api/users', usersRouter);
 
 

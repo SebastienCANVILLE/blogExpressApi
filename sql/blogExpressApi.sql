@@ -3,26 +3,16 @@
 BEGIN;
 
 
-DROP TABLE IF EXISTS public.users;
-
-CREATE TABLE IF NOT EXISTS public.users
-(
-    id serial NOT NULL,
-    username character varying NOT NULL,
-    password character varying NOT NULL,
-    PRIMARY KEY (id)
-);
-
 DROP TABLE IF EXISTS public.articles;
 
 CREATE TABLE IF NOT EXISTS public.articles
 (
     id serial NOT NULL,
-    message text NOT NULL,
+    message text COLLATE pg_catalog."default" NOT NULL,
     create_at date DEFAULT CURRENT_DATE,
     delete_at date DEFAULT CURRENT_DATE,
     user_id integer NOT NULL,
-    PRIMARY KEY (id)
+    CONSTRAINT articles_pkey PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS public.commentaires;
@@ -30,15 +20,26 @@ DROP TABLE IF EXISTS public.commentaires;
 CREATE TABLE IF NOT EXISTS public.commentaires
 (
     id serial NOT NULL,
-    commentaire text NOT NULL,
+    commentaire text COLLATE pg_catalog."default" NOT NULL,
     create_at date DEFAULT CURRENT_DATE,
     delete_at date DEFAULT CURRENT_DATE,
     user_id integer NOT NULL,
-    PRIMARY KEY (id)
+    article_id integer NOT NULL,
+    CONSTRAINT commentaires_pkey PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS public.users;
+
+CREATE TABLE IF NOT EXISTS public.users
+(
+    id serial NOT NULL,
+    username character varying COLLATE pg_catalog."default" NOT NULL,
+    password character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
 ALTER TABLE IF EXISTS public.articles
-    ADD FOREIGN KEY (user_id)
+    ADD CONSTRAINT articles_user_id_fkey FOREIGN KEY (user_id)
     REFERENCES public.users (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
@@ -46,7 +47,7 @@ ALTER TABLE IF EXISTS public.articles
 
 
 ALTER TABLE IF EXISTS public.commentaires
-    ADD FOREIGN KEY (user_id)
+    ADD CONSTRAINT commentaires_user_id_fkey FOREIGN KEY (user_id)
     REFERENCES public.users (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
@@ -54,7 +55,7 @@ ALTER TABLE IF EXISTS public.commentaires
 
 
 ALTER TABLE IF EXISTS public.commentaires
-    ADD FOREIGN KEY (id)
+    ADD FOREIGN KEY (article_id)
     REFERENCES public.articles (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
