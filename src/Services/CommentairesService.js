@@ -45,7 +45,20 @@ class CommentairesService {
     async updateCommentary(id, commentaire)
     {
         
-        const data = await client.query('UPDATE commentaires SET commentaire = $2, WHERE id = $1 RETURNING *;', [id, commentaire]);
+        const data = await client.query('UPDATE commentaires SET commentaire = $2 WHERE id = $1 RETURNING *;', [id, commentaire]);
+        
+        if (data.rowCount) {
+
+            return data.rows[0];
+        }
+
+        return undefined
+    }
+
+    async deleteCommentary(id)
+    {
+        
+        const data = await client.query('DELETE FROM commentaires WHERE id = $1 RETURNING *;', [id]);
         
         if (data.rowCount) {
 
