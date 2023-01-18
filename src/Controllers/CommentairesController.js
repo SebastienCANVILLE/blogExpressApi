@@ -12,6 +12,7 @@ class CommentairesController {
     async createCommentaire(req, res) {
 
         const commentaire = req.body.commentaire;
+        const articleId= req.body.article_id;
         const userId = req.userId;
 
         if (typeof commentaire !== 'string') {
@@ -25,11 +26,11 @@ class CommentairesController {
         }
 
         try {
-            const data = await client.query.addCommentaires(commentaire, user_id, article_id);
+            const data = await commentairesService.addCommentaires(commentaire, userId, articleId);
 
             res.status(201).json({
                 status: "OK",
-                data: data.rows[0],
+                data: data,
                 message: "le commentaire a été crée"
             });
 
