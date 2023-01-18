@@ -22,7 +22,7 @@ class ArticlesService {
 
         if (data.rowCount) {
 
-            return data.rows[0];
+            return data.rows;
         }
 
         return undefined;
@@ -30,9 +30,9 @@ class ArticlesService {
     }
 
 
-    async getOneArticle(article_id) {
+    async getOneArticle(id) {
 
-        const data = await client.query('SELECT * FROM articles WHERE article_id =$1', [article_id]);
+        const data = await client.query ('SELECT * FROM articles WHERE id = $1',[id]);
 
         if (data.rowCount) {
 
@@ -44,9 +44,9 @@ class ArticlesService {
 
     }
 
-    async updateArticle(article_id, message) {
+    async updateArticle(id, message) {
 
-        const data = await client.query("UPDATE articles SET  message = $2, WHERE article_id = $1 RETURNING * ", [article_id, message]);
+        const data = await client.query("UPDATE articles SET  message = $2, WHERE id = $1 RETURNING * ", [id, message]);
 
 
         if (data.rowCount) {
