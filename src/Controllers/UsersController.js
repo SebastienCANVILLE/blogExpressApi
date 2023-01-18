@@ -45,14 +45,14 @@ class UsersControllers {
     async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
-                console.log('REQ USER ID', req.userId);
+
 
         try {
 
-            const user = await userService.logUser(username); 
-console.log({user});
+            const user = await userService.logUser(username);
+            console.log({ user });
             if (!user) {  // si l'identifiant est incorrect
-                res.status(404).json({ 
+                res.status(404).json({
                     status: "fail",
                     message: "Compte inexistant",
                     data: null
@@ -60,20 +60,20 @@ console.log({user});
 
                 return;
             }
-            
-            bcrypt.compare(password, user.password, (err, result) => { 
 
-                const accessToken = jwt.sign({ userId: user.id }, accessTokenSecret); 
+            bcrypt.compare(password, user.password, (err, result) => {
 
-                if (result === true) { 
+                const accessToken = jwt.sign({ userId: user.id }, accessTokenSecret);
+
+                if (result === true) {
                     res.status(200).json({
                         status: "succes",
                         message: "Authentification réussi",
-                        data: accessToken 
+                        data: accessToken
                     })
                 }
                 else {
-                    res.status(403).json({  
+                    res.status(403).json({
                         status: "fail",
                         message: "Authentification FAIL",
                         data: null

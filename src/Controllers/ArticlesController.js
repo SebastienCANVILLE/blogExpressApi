@@ -5,17 +5,26 @@ const accessTokenSecret = 'youraccesstokensecret';
 const ArticlesService = require('../Services/ArticlesService');
 const articlesService = new ArticlesService();
 
-
+/**
+ * @class ArticlesController
+ */
 class ArticlesController {
 
 
+    /**
+     * 
+     * @param {*} req 
+     * @param {*} res 
+     * @returns void
+     */
     async CreateArticle(req, res) {
 
         const userId = req.userId;
         const message = req.body.message;
+        const title = req.body.title;
+        console.log('REQ USER ID', req.userId);
 
-
-        if (typeof message !== "string") {
+        if (typeof message !== "string" || typeof title != "string") {
             console.log("test")
             res.status(400).json({
                 status: "FAIL",
@@ -29,12 +38,12 @@ class ArticlesController {
 
         try {
 
-            const article = await articlesService.addArticle(message,userId);
+            const article = await articlesService.addArticle(title, message, userId);
 
 
             res.status(201).json({
                 status: "Created",
-                data: article, 
+                data: article,
                 message: "Article publié"
             });
 
@@ -112,64 +121,59 @@ class ArticlesController {
     async updateAnArticle(req, res) {
 
         const userId = req.userId;
+        const title = req.body.title;
+        const message = req.body.message;
+        const id = req.params.id;
 
-        const { id, message } = req.body;
-      
-        if (typeof id !== "number" || typeof message !== "string") {
-      
-          res.status(400).json({
-            status: "FAIL",
-            data: undefined,
-            message: "erreur de syntaxe"
-          });
-       
+
+
+        if (!message || typeof (message) !== "string") {
+
+            res.status(400).json({
+                status: "FAIL",
+                data: undefined,
+                message: "erreur de syntaxe"
+            });
+            return;
         }
-      
-        // check ticket
-      
-        if (id === 0) {
-          res.status(404).json({
-            status: "FAIL",
-            data: undefined,
-            message: "le ticket que vous tentez de modifier n'existe pas"
-          });
-      
-          return;
+
+        const articleExist = await articlesService.getOneArticle(id);
+
+        if (!articleExist || articleExist.user_id !== userId) {
+
+            res.status(404).json({
+                status: "FAIL",
+                data: undefined,
+                message: "l'article n'existe pas"
+            });
+
+            return;
         }
-      
-      
-      try {
-      
-      
-        if (req.userId !== userId) {
-          res.status(401).json({
-            status: "ERREUR",
-            data: null,
-            message: "non autorisé"
-          });
-      
-          return;
-      
-        }
-      
-        const data = await ticketsService.updateMyTicket (id, message);
-      
-        if (data.rowCount === 1) {
-          res.json({
-            status: "OK",
-            data: data.rows,
-            message: "edition ok"
-          });
-      }
+
+        try {
+
+            const data = await articlesService.updateArticle(id, title, message);
+
+            console.log(data);
+
+            if (data) {
+                res.json({
+                    status: "OK",
+                    data: data,
+                    message: "edition ok"
+                });
+            }
+
         } catch (err) {
-          console.log(err.stack);
-          res.status(404).json({
-              status: "FAIL",
-              data: undefined,
-              message: "erreur serveur",
-          });
-      }
-      
+
+            console.log(err.stack);
+            res.status(500).json({
+                status: "FAIL",
+                data: undefined,
+                message: "erreur serveur",
+            });
+        }
+
     }
     async deleteAnArticle(req, res) {
 
