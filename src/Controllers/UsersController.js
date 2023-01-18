@@ -7,7 +7,10 @@ const UsersService = require('../Services/UsersService');
 const userService = new UsersService();
 
 class UsersControllers {
-
+/** class UsersControllers
+ * * create User 
+ * 
+ */
     async createUser(req, res) {
 
         const username = req.body.username;
