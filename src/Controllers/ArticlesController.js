@@ -10,8 +10,8 @@ const articlesService = new ArticlesService();
  */
 class ArticlesController {
 
-
-    /**
+//représente une liste de requêtes 
+    /**CreateArticle
      * 
      * 
      */

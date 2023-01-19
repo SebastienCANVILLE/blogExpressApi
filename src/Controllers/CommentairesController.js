@@ -15,12 +15,13 @@ class CommentairesController {
      * * Method controller pour insertion de commentaire. 
      */
     async insertCommentaire(req, res) {
-        console.log(req.body);
+
         const commentaire = req.body.commentaire;
         const articleId = req.body.article_id;
         const userId = req.userId;
 
         if (typeof commentaire !== 'string') {
+
             res.status(400).json({
                 status: 'FAIL',
                 data: undefined,
@@ -31,6 +32,7 @@ class CommentairesController {
         }
 
         try {
+
             const data = await commentairesService.insertCommentaire(commentaire, userId, articleId);
 
             res.status(201).json({
@@ -41,13 +43,12 @@ class CommentairesController {
 
         }
         catch (err) {
-            console.log(err.stack)
+
             res.status(500).json({
                 status: 'Fail',
                 data: undefined,
                 message: "Erreur de status"
             });
-
         }
     };
 
@@ -60,9 +61,11 @@ class CommentairesController {
         const id = req.params.id;
 
         try {
+
             const data = await commentairesService.getCommentaryById(id);
 
             if (data) {
+
                 res.status(200).json({
                     status: "OK",
                     data: data,
@@ -80,7 +83,7 @@ class CommentairesController {
 
 
         } catch (err) {
-            console.log(err.stack);
+
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,
@@ -101,6 +104,7 @@ class CommentairesController {
             const data = await commentairesService.getAllCommentaryByArticle(articleId);
 
             if (data) {
+
                 res.status(200).json({
                     status: "OK",
                     data: data,
@@ -118,7 +122,7 @@ class CommentairesController {
 
 
         } catch (err) {
-            console.log(err.stack);
+
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,
@@ -138,8 +142,8 @@ class CommentairesController {
 
         try {
 
-
             if (typeof (id) !== 'number' && typeof (commentaire) !== 'string') { // permet de vérifier que la structure est correct
+
                 res.status(400).json({
                     status: 'FAIL',
                     data: undefined,
@@ -149,9 +153,9 @@ class CommentairesController {
 
             // check Commentaire
             const isCommentaireExist = await commentairesService.getCommentaryById(id); // permet de vérifier que l'id existe pour pouvoir modifier le ticket sinon il renvoi une erreur
-            console.log('TEST 1', isCommentaireExist);
 
             if (isCommentaireExist === undefined) {
+
                 res.status(404).json({
                     status: 'FAIL',
                     data: undefined,
@@ -164,6 +168,7 @@ class CommentairesController {
             const userId = req.userId;
 
             if (isCommentaireExist.user_id !== userId) {
+
                 res.status(404).json({
                     status: 'FAIL',
                     data: null,
@@ -176,6 +181,7 @@ class CommentairesController {
             const data = await commentairesService.updateCommentary(id, commentaire);
 
             if (data) {
+
                 res.status(200).json({
                     status: 'OK',
                     data: data,
@@ -183,6 +189,7 @@ class CommentairesController {
                 })
             }
             else {
+
                 res.status(404).json({
                     status: 'FAIL',
                     data: null,
@@ -191,6 +198,7 @@ class CommentairesController {
             }
 
         } catch (error) {
+
             res.status(500)({
                 status: "FAIL",
                 data: undefined,
@@ -212,8 +220,8 @@ class CommentairesController {
             // check commentaire
             const commentaireExist = await commentairesService.getCommentaryById(id);
 
-
             if (commentaireExist === undefined) {
+
                 res.status(404).json({
                     status: 'FAIL',
                     data: undefined,
@@ -224,6 +232,7 @@ class CommentairesController {
             }
 
             if (commentaireExist.user_id !== userId) {
+
                 res.status(401).json({
                     status: 'FAIL',
                     data: null,
@@ -236,7 +245,7 @@ class CommentairesController {
             const data = await commentairesService.deleteCommentary(id);
 
             if (data) {
-                //res.json({ deleted: true });
+
                 res.status(200).json({
                     status: 'OK',
                     data: data,
@@ -245,12 +254,12 @@ class CommentairesController {
             }
 
         } catch (error) {
+
             res.status(500)({
                 status: "FAIL",
                 data: undefined,
                 message: "Erreur serveur",
             });
-
         }
     };
 }
