@@ -6,16 +6,14 @@ const ArticlesService = require('../Services/ArticlesService');
 const articlesService = new ArticlesService();
 
 /**
- * @class ArticlesController
+ * 
  */
 class ArticlesController {
 
 
     /**
      * 
-     * @param {*} req 
-     * @param {*} res 
-     * @returns void
+     * 
      */
     async CreateArticle(req, res) {
 
@@ -194,7 +192,7 @@ class ArticlesController {
 
         }
 
-        if (data.user_id !== userId) {
+        if (articleExist.user_id !== userId) {
 
             res.status(401).json({
                 status: "ERREUR",
@@ -205,8 +203,6 @@ class ArticlesController {
             return;
         }
 
-
-
         try {
 
             const data = await articlesService.deleteArticle(id);
@@ -214,15 +210,15 @@ class ArticlesController {
             if (data) {
 
                 res.status(200).json({
-                    status: "SUPPRESSION ARTICLE EFFECTUEE",
+                    status: "OK",
                     data: data,
-                    deleted: true,
+                   message:"SUPPRESSION ARTICLE EFFECTUEE"
                 });
 
             };
 
         } catch (err) {
-            console.log(err.stack);
+            console.log(err);
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,

@@ -28,7 +28,7 @@ class ArticlesService {
             return data.rows;
         }
 
-        return undefined;
+        return [];
 
     }
 
@@ -65,7 +65,7 @@ class ArticlesService {
 
     async deleteArticle(id) {
 
-        const data = await client.query('DELETE FROM articles WHERE article_id= $1'[id]);
+        const data = await client.query('DELETE FROM articles WHERE id= $1 RETURNING id', [id]);
 
         if (data.rowCount) {
 
