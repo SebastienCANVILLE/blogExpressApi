@@ -4,7 +4,7 @@ const commentairesService = new CommentairesService();
 
 class CommentairesController {
 
-    async createCommentaire(req, res) {
+    async insertCommentaire(req, res) {
         console.log(req.body);
         const commentaire = req.body.commentaire;
         const articleId = req.body.article_id;
@@ -21,7 +21,7 @@ class CommentairesController {
         }
 
         try {
-            const data = await commentairesService.addCommentaires(commentaire, userId, articleId);
+            const data = await commentairesService.insertCommentaire(commentaire, userId, articleId);
 
             res.status(201).json({
                 status: "OK",
@@ -40,7 +40,10 @@ class CommentairesController {
 
         }
     };
-
+/**
+ * @method getCommentaryById:
+ * test
+ */
     async getCommentaryById(req, res) {
 
         const id = req.params.id;
@@ -121,6 +124,8 @@ class CommentairesController {
                 message: "Erreur de structure"
             });
         }
+try {
+    
 
         // check Commentaire
         const isCommentaireExist = await commentairesService.getCommentaryById(id); // permet de vérifier que l'id existe pour pouvoir modifier le ticket sinon il renvoi une erreur
@@ -163,7 +168,14 @@ class CommentairesController {
                 data: null,
                 message: "Erreur"
             })
-        }
+        }} catch (error) {
+            res.status(404).json({
+                status: 'FAIL',
+                data: null,
+                message: "Erreur"
+            })
+    
+}
     };
 
     async deleteCommentary(req, res) {
@@ -174,6 +186,7 @@ class CommentairesController {
         // check commentaire
         const commentaireExist = await commentairesService.getCommentaryById(id);
         
+
         if (commentaireExist === undefined) {
             res.status(404).json({
                 status: 'FAIL',

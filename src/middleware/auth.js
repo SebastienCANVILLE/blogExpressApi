@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
 const accessTokenSecret = 'youraccesstokensecret';
 
-
+/**
+ * Variable authenticateJWT :
+ * * Permet de créer un système d'authentification de l'user pour pouvoir manipuler des requêtes (CREATE, UPDATE, DELETE, READ).
+ */
 const authenticateJWT = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
