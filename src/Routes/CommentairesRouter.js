@@ -13,8 +13,8 @@ const commentairesController = new CommentairesController();
  */
 commentairesRouter.post('/', authenticateJWT, commentairesController.insertCommentaire); // authentification
 commentairesRouter.get('/:id', commentairesController.getCommentaryById); // pas d'authentification
-commentairesRouter.get('/:id', commentairesController.getAllCommentaryByArticle); // pas d'authentification
+commentairesRouter.get('/ofArticle/:id', commentairesController.getAllCommentaryByArticle); // pas d'authentification
 commentairesRouter.put('/', authenticateJWT, commentairesController.updateCommentary); // authentification
-commentairesRouter.delete('/:id', authenticateJWT, commentairesController.deleteCommentary); // authentification
+commentairesRouter.delete('/delete/:id', authenticateJWT, commentairesController.deleteCommentary); // authentification
 
 module.exports = commentairesRouter;

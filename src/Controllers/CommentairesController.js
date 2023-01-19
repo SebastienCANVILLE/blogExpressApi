@@ -32,7 +32,7 @@ class CommentairesController {
         }
         catch (err) {
             console.log(err.stack)
-            res.status(404).json({
+            res.status(500).json({
                 status: 'Fail',
                 data: undefined,
                 message: "Erreur de status"
@@ -40,10 +40,10 @@ class CommentairesController {
 
         }
     };
-/**
- * @method getCommentaryById:
- * test
- */
+    /**
+     * @method getCommentaryById:
+     * test
+     */
     async getCommentaryById(req, res) {
 
         const id = req.params.id;
@@ -70,7 +70,7 @@ class CommentairesController {
 
         } catch (err) {
             console.log(err.stack);
-            res.status(404).json({
+            res.status(500).json({
                 status: "FAIL",
                 data: undefined,
                 message: "erreur serveur",
@@ -103,7 +103,7 @@ class CommentairesController {
 
         } catch (err) {
             console.log(err.stack);
-            res.status(404).json({
+            res.status(500).json({
                 status: "FAIL",
                 data: undefined,
                 message: "erreur serveur",
@@ -116,66 +116,67 @@ class CommentairesController {
         const id = req.body.id;
         const commentaire = req.body.commentaire;
 
+        try {
 
-        if (typeof (id) !== 'number' && typeof (commentaire) !== 'string') { // permet de vérifier que la structure est correct
-            res.status(400).json({
-                status: 'FAIL',
+
+            if (typeof (id) !== 'number' && typeof (commentaire) !== 'string') { // permet de vérifier que la structure est correct
+                res.status(400).json({
+                    status: 'FAIL',
+                    data: undefined,
+                    message: "Erreur de structure"
+                });
+            }
+
+            // check Commentaire
+            const isCommentaireExist = await commentairesService.getCommentaryById(id); // permet de vérifier que l'id existe pour pouvoir modifier le ticket sinon il renvoi une erreur
+            console.log('TEST 1', isCommentaireExist);
+
+            if (isCommentaireExist === undefined) {
+                res.status(404).json({
+                    status: 'FAIL',
+                    data: undefined,
+                    message: "Le ticket n'existe pas"
+                });
+
+                return;
+            }
+
+            const userId = req.userId;
+
+            if (isCommentaireExist.user_id !== userId) {
+                res.status(404).json({
+                    status: 'FAIL',
+                    data: null,
+                    message: "Le Commentaire ne vous appartient pas, modification impossible"
+                });
+
+                return;
+            }
+
+            const data = await commentairesService.updateCommentary(id, commentaire);
+
+            if (data) {
+                res.status(200).json({
+                    status: 'OK',
+                    data: data,
+                    message: "Edition ok"
+                })
+            }
+            else {
+                res.status(404).json({
+                    status: 'FAIL',
+                    data: null,
+                    message: "Erreur"
+                })
+            }
+
+        } catch (error) {
+            res.status(500)({
+                status: "FAIL",
                 data: undefined,
-                message: "Erreur de structure"
+                message: "erreur serveur",
             });
         }
-try {
-    
-
-        // check Commentaire
-        const isCommentaireExist = await commentairesService.getCommentaryById(id); // permet de vérifier que l'id existe pour pouvoir modifier le ticket sinon il renvoi une erreur
-        console.log('TEST 1', isCommentaireExist);
-
-        if (isCommentaireExist === undefined) {
-            res.status(404).json({
-                status: 'FAIL',
-                data: undefined,
-                message: "Le ticket n'existe pas"
-            });
-
-            return;
-        }
-
-        const userId = req.userId;
-
-        if (isCommentaireExist.user_id !== userId) {
-            res.status(404).json({
-                status: 'FAIL',
-                data: null,
-                message: "Le Commentaire ne vous appartient pas, modification impossible"
-            });
-
-            return;
-        }
-
-        const data = await commentairesService.updateCommentary(id, commentaire);
-
-        if (data) {
-            res.json({
-                status: 'OK',
-                data: data,
-                message: "Edition ok"
-            })
-        }
-        else {
-            res.status(404).json({
-                status: 'FAIL',
-                data: null,
-                message: "Erreur"
-            })
-        }} catch (error) {
-            res.status(404).json({
-                status: 'FAIL',
-                data: null,
-                message: "Erreur"
-            })
-    
-}
     };
 
     async deleteCommentary(req, res) {
@@ -183,43 +184,51 @@ try {
         const id = req.params.id;
         const userId = req.userId;
 
-        // check commentaire
-        const commentaireExist = await commentairesService.getCommentaryById(id);
-        
+        try {
+            // check commentaire
+            const commentaireExist = await commentairesService.getCommentaryById(id);
 
-        if (commentaireExist === undefined) {
-            res.status(404).json({
-                status: 'FAIL',
+
+            if (commentaireExist === undefined) {
+                res.status(404).json({
+                    status: 'FAIL',
+                    data: undefined,
+                    message: "Le commentaire n'existe pas"
+                });
+
+                return;
+            }
+
+            if (commentaireExist.user_id !== userId) {
+                res.status(401).json({
+                    status: 'FAIL',
+                    data: null,
+                    message: "Le commentaire ne vous appartient pas, suppression impossible"
+                });
+
+                return;
+            }
+
+            const data = await commentairesService.deleteCommentary(id);
+
+            if (data) {
+                //res.json({ deleted: true });
+                res.status(200).json({
+                    status: 'OK',
+                    data: data,
+                    message: "Commentaire supprimé"
+                });
+            }
+
+        } catch (error) {
+            res.status(500)({
+                status: "FAIL",
                 data: undefined,
-                message: "Le commentaire n'existe pas"
+                message: "Erreur serveur",
             });
 
-            return;
-        }
-
-        if (commentaireExist.user_id !== userId) {
-            res.status(404).json({
-                status: 'FAIL',
-                data: null,
-                message: "Le ticket ne vous appartient pas, suprresion impossible"
-            });
-
-            return;
-        }
-
-        const data = await commentairesService.deleteCommentary(id);
-
-        if (data) {
-            //res.json({ deleted: true });
-            res.status(200).json({
-                status: 'OK',
-                data: data,
-                message: "ticket supprimé"
-            });
         }
     };
 }
-
-
 
 module.exports = CommentairesController;
