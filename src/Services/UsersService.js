@@ -9,9 +9,7 @@ class UsersService {
 
     async addUser(username,hash) {
         
-        console.log(username,hash);
-        const data = await client.query('INSERT INTO users (username,password) VALUES ($1,$2) RETURNING * ', [username,hash]);//* à modifier car le password ne doit pas etre affiché
-        console.log(data.rows);
+        const data = await client.query('INSERT INTO users (username,password) VALUES ($1,$2) RETURNING * ', [username,hash]);
         if (data.rowCount) {
 
             return data.rows[0];

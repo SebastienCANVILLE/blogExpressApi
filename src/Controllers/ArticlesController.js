@@ -20,10 +20,9 @@ class ArticlesController {
         const userId = req.userId;
         const message = req.body.message;
         const title = req.body.title;
-        console.log('REQ USER ID', req.userId);
 
         if (typeof message !== "string" || typeof title != "string") {
-            console.log("test")
+
             res.status(400).json({
                 status: "FAIL",
                 data: undefined,
@@ -48,7 +47,7 @@ class ArticlesController {
 
         }
         catch (err) {
-            console.log(err.stack);
+
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,
@@ -72,7 +71,7 @@ class ArticlesController {
             });
 
         } catch (err) {
-            console.log(err.stack);
+
             res.status(500).json({
                 status: "ERROR",
                 data: undefined,
@@ -107,7 +106,7 @@ class ArticlesController {
             }
 
         } catch (err) {
-            console.log(err.stack);
+
             res.status(500).json({
                 status: "ERROR",
                 data: undefined,
@@ -137,34 +136,44 @@ class ArticlesController {
 
         const articleExist = await articlesService.getOneArticle(id);
 
-        if (!articleExist || articleExist.user_id !== userId) { //A VOIR DEMAIN
+        if (!articleExist) {
 
             res.status(404).json({
-                status: "FAIL",
+                status: "NOT FOUND",
                 data: undefined,
-                message: "l'article n'existe pas/non autorisé"// PAS DE REPONSE NON AUTORISE
+                message: "l'article n'existe pas"
             });
 
             return;
         }
 
+        if (articleExist.user_id !== userId) {
+
+            res.status(401).json({
+                status: "FAIL",
+                data: undefined,
+                message: "non autorisé"
+            });
+
+            return;
+
+
+        }
         try {
 
             const data = await articlesService.updateArticle(id, title, message);
 
-            console.log(data);
 
             if (data) {
                 res.status(200).json({
                     status: "UPDATED",
                     data: data,
-                    message: "edition ok"
+                    message: "Modification effectuée"
                 });
             }
 
         } catch (err) {
 
-            console.log(err.stack);
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,
@@ -183,7 +192,8 @@ class ArticlesController {
         if (!articleExist) {
 
             res.status(404).json({
-                status: "FAIL",
+
+                status: "NOT FOUND",
                 data: undefined,
                 message: "l'article n'existe pas",
             });
@@ -212,13 +222,13 @@ class ArticlesController {
                 res.status(200).json({
                     status: "OK",
                     data: data,
-                   message:"SUPPRESSION ARTICLE EFFECTUEE"
+                    message: "SUPPRESSION ARTICLE EFFECTUEE"
                 });
 
             };
 
         } catch (err) {
-            console.log(err);
+
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,

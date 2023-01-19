@@ -7,25 +7,25 @@ const UsersService = require('../Services/UsersService');
 const userService = new UsersService();
 
 class UsersControllers {
-/** class UsersControllers
- * * create User 
- * 
- */
+    /** class UsersControllers
+     * * create User 
+     * 
+     */
     async createUser(req, res) {
-        console.log(bcrypt);
+
 
         const username = req.body.username;
         const password = req.body.password;
-      
-      
+
+
 
 
         bcrypt.hash(password, 10, async function (err, hash) {
 
             try {
-                console.log(username);   
+
                 const user = await userService.addUser(username, hash);
-              console.log(user);
+
 
                 res.status(201).json({
                     status: "OK",
@@ -36,7 +36,7 @@ class UsersControllers {
 
             } catch (err) {
 
-                console.log(err);
+
                 res.status(404).json({
                     status: "FAIL",
                     data: undefined,
@@ -55,9 +55,8 @@ class UsersControllers {
 
 
         try {
-
             const user = await userService.logUser(username);
-            console.log({ user });
+
             if (!user) {  // si l'identifiant est incorrect
                 res.status(404).json({
                     status: "fail",
@@ -67,7 +66,6 @@ class UsersControllers {
 
                 return;
             }
-
             bcrypt.compare(password, user.password, (err, result) => {
 
                 const accessToken = jwt.sign({ userId: user.id }, accessTokenSecret);
@@ -90,7 +88,6 @@ class UsersControllers {
         }
 
         catch (err) {
-
             res.status(500).json({
                 status: "FAIL",
                 message: "erreur serveur",

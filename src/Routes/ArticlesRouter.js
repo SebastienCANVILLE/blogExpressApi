@@ -3,22 +3,22 @@ const authenticateJWT = require("../middleware/auth");
 const articlesRouter = express.Router();
 
 
-const ArticlesController = require ('../Controllers/ArticlesController')
+const ArticlesController = require('../Controllers/ArticlesController')
 const articlesController = new ArticlesController();
 
 
 
 
 
-articlesRouter.post ('/', authenticateJWT, articlesController.CreateArticle);
+articlesRouter.post('/', authenticateJWT, articlesController.CreateArticle);
 
-articlesRouter.get ('/', articlesController.getAllArticles);
+articlesRouter.get('/', articlesController.getAllArticles);
 
-articlesRouter.get ('/:id', articlesController.getByArticle);
+articlesRouter.get('/:id', articlesController.getByArticle);
 
-articlesRouter.put ('/:id', authenticateJWT, articlesController.updateArticle);
+articlesRouter.put('/:id', authenticateJWT, articlesController.updateArticle);
 
-articlesRouter.delete ('/:id', authenticateJWT, articlesController.deleteArticle);
+articlesRouter.delete('/:id', authenticateJWT, articlesController.deleteArticle);
 
 
 
