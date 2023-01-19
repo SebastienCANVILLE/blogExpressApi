@@ -1,9 +1,19 @@
 const CommentairesService = require('../Services/CommentairesService');
 const commentairesService = new CommentairesService();
 
-
+/**
+ * @class CommentairesController :
+ * Une classe de méthodes :
+ * * Interpréter l'action envoyées par l'user
+ * * Contrôler les requêtes, 
+ * * Contrôler ses droits et de générer des codes erreurs. 
+ */
 class CommentairesController {
 
+    /** 
+     * @method insertCommentaire :
+     * * Method controller pour insertion de commentaire. 
+     */
     async insertCommentaire(req, res) {
         console.log(req.body);
         const commentaire = req.body.commentaire;
@@ -40,9 +50,10 @@ class CommentairesController {
 
         }
     };
-    /**
-     * @method getCommentaryById:
-     * test
+
+    /** 
+     * @method getCommentaryById :
+     * * Method controller pour recupérer un commentaire par son id. 
      */
     async getCommentaryById(req, res) {
 
@@ -77,6 +88,11 @@ class CommentairesController {
             });
         }
     };
+
+    /** 
+     * @method getAllCommentaryByArticle :
+     * * Method controller pour recupérer tous les commentaires d'un article (id). 
+     */
     async getAllCommentaryByArticle(req, res) {
 
         const articleId = req.params.id;
@@ -111,6 +127,10 @@ class CommentairesController {
         }
     };
 
+    /** 
+     * @method updateCommentary :
+     * * Method controller pour modifier (update) un commentaires via son id. 
+     */
     async updateCommentary(req, res) {
 
         const id = req.body.id;
@@ -179,6 +199,10 @@ class CommentairesController {
         }
     };
 
+    /** 
+     * @method deleteCommentary :
+     * * Method controller pour supprimer un commentaires via son id. 
+     */
     async deleteCommentary(req, res) {
 
         const id = req.params.id;

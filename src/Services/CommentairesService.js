@@ -2,13 +2,13 @@ const client = require('../client');
 
 /**
  * @class CommentairesService :
- * *Une classe de méthodes qui permet de créer des requêtes SQL 
+ * * Une classe de méthodes qui permet de créer des requêtes SQL 
  */
 class CommentairesService {
 
 /** 
  * @method insertCommentaire :
- * *Method qui permet de créer une requête SQL insérer un commentaire à un article. 
+ * * Method qui permet de créer une requête SQL insérer un commentaire à un article. 
  */
     async insertCommentaire(commentaire, userId, articleId) {
 
@@ -25,7 +25,7 @@ class CommentairesService {
 
 /**
  * @method getCommentaryById :
- * *Method qui permet de créer une requête SQL qui récupère tous les commentaires par Id. 
+ * * Method qui permet de créer une requête SQL qui récupère tous les commentaires par Id. 
  */
     async getCommentaryById(id) {
 
@@ -41,7 +41,7 @@ class CommentairesService {
 
 /**
  * @method getAllCommentaryByArticle :
- * *Method qui permet de créer une requête SQL qui récupère tous les commentaires d'un article. 
+ * * Method qui permet de créer une requête SQL qui récupère tous les commentaires d'un article. 
  */
     async getAllCommentaryByArticle(article_id) {
 
@@ -57,7 +57,7 @@ class CommentairesService {
 
 /**
  * @method updateCommentary :
- * *Method qui permet de créer une requête SQL qui modifie un commentaire déjà existant. 
+ * * Method qui permet de créer une requête SQL qui modifie un commentaire déjà existant. 
  */
     async updateCommentary(id, commentaire) {
 
@@ -73,7 +73,7 @@ class CommentairesService {
 
 /**
  * @method deleteCommentary :
- * *Method qui permet de créer une requête SQL qui supprime un commentaire grâce à son Id. 
+ * * Method qui permet de créer une requête SQL qui supprime un commentaire grâce à son Id. 
  */
     async deleteCommentary(id) {
 
