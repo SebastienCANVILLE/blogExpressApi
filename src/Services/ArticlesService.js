@@ -2,10 +2,8 @@ const client = require('../client');
 
 
 class ArticlesService {
-/** addArticle : création d'un article dans TABLE articles
- * * 
- * *
- */
+
+/** addArticle : requête SQL POUR création article dans TABLE articles */
     async addArticle(title, message, userId) {
 
         const article = await client.query("INSERT INTO articles (title,message,user_id) VALUES( $1,$2,$3 ) RETURNING * ", [title, message, userId]);
@@ -19,6 +17,7 @@ class ArticlesService {
 
     }
 
+    /**getArticles : requête SQL pour récupération des articles dans TABLE articles */
     async getArticles() {
 
         const data = await client.query("SELECT * FROM articles");
@@ -32,7 +31,7 @@ class ArticlesService {
 
     }
 
-
+/**getOneArticle : requête SQL récupération article par id  dans TABLE articles*/
     async getOneArticle(id) {
 
         const data = await client.query('SELECT * FROM articles WHERE id = $1', [id]);
@@ -46,6 +45,7 @@ class ArticlesService {
 
 
     }
+    /**updateArticle: requête SQL pour modification article dans TABLE articles */
 
     async updateArticle(id, title, message) {
 
@@ -62,7 +62,7 @@ class ArticlesService {
 
     }
 
-
+/**deleteArticle: requête SQL pour suppresion article dans TABLE articles */
     async deleteArticle(id) {
 
         const data = await client.query('DELETE FROM articles WHERE id= $1 RETURNING id', [id]);
