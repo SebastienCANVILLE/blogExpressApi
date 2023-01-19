@@ -2,7 +2,7 @@ const client = require('../client');
 
 
 class ArticlesService {
-/** addArticle: création d'un article dans TABLE articles
+/** addArticle : création d'un article dans TABLE articles
  * * 
  * *
  */
@@ -28,7 +28,7 @@ class ArticlesService {
             return data.rows;
         }
 
-        return undefined;
+        return [];
 
     }
 
@@ -63,9 +63,9 @@ class ArticlesService {
     }
 
 
-    async deleteArticle(article_id) {
+    async deleteArticle(id) {
 
-        const data = await client.query('DELETE FROM articles WHERE article_id= $1'[article_id]);
+        const data = await client.query('DELETE FROM articles WHERE id= $1 RETURNING id', [id]);
 
         if (data.rowCount) {
 

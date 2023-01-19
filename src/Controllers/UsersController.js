@@ -7,19 +7,25 @@ const UsersService = require('../Services/UsersService');
 const userService = new UsersService();
 
 class UsersControllers {
-
+/** class UsersControllers
+ * * create User 
+ * 
+ */
     async createUser(req, res) {
+        console.log(bcrypt);
 
         const username = req.body.username;
         const password = req.body.password;
+      
+      
 
 
         bcrypt.hash(password, 10, async function (err, hash) {
 
             try {
-
+                console.log(username);   
                 const user = await userService.addUser(username, hash);
-
+              console.log(user);
 
                 res.status(201).json({
                     status: "OK",
@@ -30,6 +36,7 @@ class UsersControllers {
 
             } catch (err) {
 
+                console.log(err);
                 res.status(404).json({
                     status: "FAIL",
                     data: undefined,

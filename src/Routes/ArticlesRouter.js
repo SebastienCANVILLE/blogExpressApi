@@ -16,9 +16,9 @@ articlesRouter.get ('/', articlesController.getAllArticles);
 
 articlesRouter.get ('/:id', articlesController.getByArticle);
 
-articlesRouter.put ('/:id', authenticateJWT, articlesController.updateAnArticle);
+articlesRouter.put ('/:id', authenticateJWT, articlesController.updateArticle);
 
-articlesRouter.delete ('/:id', authenticateJWT, articlesController.deleteAnArticle);
+articlesRouter.delete ('/:id', authenticateJWT, articlesController.deleteArticle);
 
 
 

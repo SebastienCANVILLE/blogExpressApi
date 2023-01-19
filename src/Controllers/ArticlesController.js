@@ -6,16 +6,14 @@ const ArticlesService = require('../Services/ArticlesService');
 const articlesService = new ArticlesService();
 
 /**
- * @class ArticlesController
+ * 
  */
 class ArticlesController {
 
 
     /**
      * 
-     * @param {*} req 
-     * @param {*} res 
-     * @returns void
+     * 
      */
     async CreateArticle(req, res) {
 
@@ -51,7 +49,7 @@ class ArticlesController {
         }
         catch (err) {
             console.log(err.stack);
-            res.status(404).json({
+            res.status(500).json({
                 status: "FAIL",
                 data: undefined,
                 message: "erreur serveur",
@@ -76,7 +74,7 @@ class ArticlesController {
         } catch (err) {
             console.log(err.stack);
             res.status(500).json({
-                status: "FAIL",
+                status: "ERROR",
                 data: undefined,
                 message: "une erreur est survenue"
             });
@@ -101,7 +99,7 @@ class ArticlesController {
             } else {
 
                 res.status(404).json({
-                    status: "FAIL",
+                    status: "NOT FOUND",
                     data: undefined,
                     message: "l'article' n'existe pas",
 
@@ -110,15 +108,15 @@ class ArticlesController {
 
         } catch (err) {
             console.log(err.stack);
-            res.status(404).json({
-                status: "FAIL",
+            res.status(500).json({
+                status: "ERROR",
                 data: undefined,
                 message: "erreur serveur",
             });
         }
 
     }
-    async updateAnArticle(req, res) {
+    async updateArticle(req, res) {
 
         const userId = req.userId;
         const title = req.body.title;
@@ -139,12 +137,12 @@ class ArticlesController {
 
         const articleExist = await articlesService.getOneArticle(id);
 
-        if (!articleExist || articleExist.user_id !== userId) {
+        if (!articleExist || articleExist.user_id !== userId) { //A VOIR DEMAIN
 
             res.status(404).json({
                 status: "FAIL",
                 data: undefined,
-                message: "l'article n'existe pas"
+                message: "l'article n'existe pas/non autorisé"// PAS DE REPONSE NON AUTORISE
             });
 
             return;
@@ -157,8 +155,8 @@ class ArticlesController {
             console.log(data);
 
             if (data) {
-                res.json({
-                    status: "OK",
+                res.status(200).json({
+                    status: "UPDATED",
                     data: data,
                     message: "edition ok"
                 });
@@ -175,7 +173,62 @@ class ArticlesController {
         }
 
     }
-    async deleteAnArticle(req, res) {
+    async deleteArticle(req, res) {
+
+        const id = req.params.id;
+        const userId = req.userId;
+
+        const articleExist = await articlesService.getOneArticle(id);
+
+        if (!articleExist) {
+
+            res.status(404).json({
+                status: "FAIL",
+                data: undefined,
+                message: "l'article n'existe pas",
+            });
+
+            return;
+
+        }
+
+        if (articleExist.user_id !== userId) {
+
+            res.status(401).json({
+                status: "ERREUR",
+                data: null,
+                message: "non autorisé"
+            });
+
+            return;
+        }
+
+        try {
+
+            const data = await articlesService.deleteArticle(id);
+
+            if (data) {
+
+                res.status(200).json({
+                    status: "OK",
+                    data: data,
+                   message:"SUPPRESSION ARTICLE EFFECTUEE"
+                });
+
+            };
+
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({
+                status: "FAIL",
+                data: undefined,
+                message: "erreur serveur",
+            });
+        }
+
+
+
+
 
     }
 
