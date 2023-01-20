@@ -21,57 +21,57 @@ Routes reprises dans index.js
 *** USERS ***
 
 - REGISTER :
-/api/users/register
-body { username, password }
+*  /api/users/register
+*  body { username, password }
 
 - LOGIN :
-/api/users/login
-body { username, password }
+*  /api/users/login
+*  body { username, password }
 
 
 
 *** ARTICLES ***
 
 - POST : création article
- /api/articles/
-body : { message, title, userId }
+*  /api/articles/
+*  body : { message, title, userId }
 
 - GET ALL ARTICLES : récupération de tous les articles
- /api/articles/
+*  /api/articles/
 
 - GET ARTICLE BY ID : récupération d'un article via son id
- /api/articles/:id
-params {id}
+*  /api/articles/:id
+*  params {id}
 
 - PUT : modification article
- /api/articles/
-body : { id , title, message }
+*  /api/articles/
+*  body : { id , title, message }
 
 - DELETE ARTICLE : suppression article via son id
- /api/articles/:id
-params {id}
+*  /api/articles/:id
+*  params {id}
 
 
 *** COMMENTAIRES ***
 
 - POST : créer un commentaire
-/api/commentaires/
-body { commentaire, userId, articleId }
+*  /api/commentaires/
+*  body { commentaire, userId, articleId }
 
 - GET : Récupérer un commentaire via son id.
-/api/commentaires/
-params { id }
+*  /api/commentaires/
+*  params { id }
 
 - GET : Récuperer tous les commentaires d'un article.
-/api/commentaires/ofArticle/
-params { id }
+*  /api/commentaires/ofArticle/
+*  params { id }
 
 - PUT : Mofifier un commentaire.
-/api/commentaires/
-body { commentaire, id }
+*  /api/commentaires/
+*  body { commentaire, id }
 
 - DELETE : Supprimer un commentaire via son id.
-/api/commentaires/delete/
-params { id }
+*  /api/commentaires/delete/
+*  params { id }
 
 
