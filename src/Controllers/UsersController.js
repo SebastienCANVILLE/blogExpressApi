@@ -6,26 +6,23 @@ const accessTokenSecret = 'youraccesstokensecret';
 const UsersService = require('../Services/UsersService');
 const userService = new UsersService();
 
+/**@class UsersControllers
+ * * Création compte pour accès à la databse PostgreSQL : function createUser
+ * * Authentification pour accès à la database postgreSQL : function login */
 class UsersControllers {
-    /** class UsersControllers
-     * * create User 
-     * 
-     */
+    /** Création compte pour accès à la databse PostgreSQL 
+    * * Utilsation package bcrypt.hash pour générer une string représentant le password utilisateur ( string ) */
     async createUser(req, res) {
-
 
         const username = req.body.username;
         const password = req.body.password;
 
-
-
-
         bcrypt.hash(password, 10, async function (err, hash) {
 
+            /** @return String - the bcrypt hash password*/
+
             try {
-
                 const user = await userService.addUser(username, hash);
-
 
                 res.status(201).json({
                     status: "OK",
@@ -33,10 +30,7 @@ class UsersControllers {
                     message: "Votre compte a été crée avec succès"
                 });
 
-
             } catch (err) {
-
-
                 res.status(404).json({
                     status: "FAIL",
                     data: undefined,
@@ -48,11 +42,15 @@ class UsersControllers {
         });
 
     }
-
+    /**  Permet d'accéder à la database postgreSQL
+     * * @param password string of the endpoint to connect to
+     * * @param user string of the user to be connected with
+     * * @param token string of the user
+     * * Utilisation bcrypt.compare : compare si les hashs générés proviennent du même utilisateur
+     * *  Si true : Utilisation jwt.sign (jsonwebtoken) et authentification*/
     async login(req, res) {
         const username = req.body.username;
         const password = req.body.password;
-
 
         try {
             const user = await userService.logUser(username);
@@ -67,9 +65,8 @@ class UsersControllers {
                 return;
             }
             bcrypt.compare(password, user.password, (err, result) => {
-
+                /**@ params password string */
                 const accessToken = jwt.sign({ userId: user.id }, accessTokenSecret);
-
                 if (result === true) {
                     res.status(200).json({
                         status: "succes",
@@ -97,7 +94,5 @@ class UsersControllers {
     };
 
 }
-
-
 
 module.exports = UsersControllers;

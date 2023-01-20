@@ -3,7 +3,7 @@ const client = require('../client');
 
 class ArticlesService {
 
-/** addArticle : requête SQL POUR création article dans TABLE articles */
+/** addArticle : requête SQL pour création article dans TABLE articles */
     async addArticle(title, message, userId) {
 
         const article = await client.query("INSERT INTO articles (title,message,user_id) VALUES( $1,$2,$3 ) RETURNING * ", [title, message, userId]);

@@ -3,8 +3,7 @@ const accessTokenSecret = 'youraccesstokensecret';
 
 /**
  * @constant authenticateJWT :
- * * Permet de créer un système d'authentification de l'user pour pouvoir manipuler des requêtes (CREATE, UPDATE, DELETE, READ).
- */
+ * * Permet de créer un système d'authentification de l'user pour pouvoir manipuler des requêtes (CREATE, UPDATE, DELETE, READ): dépendances jsonwebtoken */
 const authenticateJWT = (req, res, next) => {
 
     const authHeader = req.headers.authorization;

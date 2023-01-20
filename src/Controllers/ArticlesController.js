@@ -5,16 +5,10 @@ const accessTokenSecret = 'youraccesstokensecret';
 const ArticlesService = require('../Services/ArticlesService');
 const articlesService = new ArticlesService();
 
-/**
- * 
- */
+/** @class Articles Controller
+ * * Regroupe les méthodes propres aux requêtes SQL de la table articles */
 class ArticlesController {
-
-//représente une liste de requêtes 
-    /**CreateArticle
-     * 
-     * 
-     */
+    /** CreateArticle => renvoie à la méthode articlesService.addArticle */
     async CreateArticle(req, res) {
 
         const userId = req.userId;
@@ -28,15 +22,11 @@ class ArticlesController {
                 data: undefined,
                 message: "erreur de syntaxe"
             });
-
             return;
-
         }
 
         try {
-
             const article = await articlesService.addArticle(title, message, userId);
-
 
             res.status(201).json({
                 status: "Created",
@@ -44,10 +34,8 @@ class ArticlesController {
                 message: "Article publié"
             });
 
-
         }
         catch (err) {
-
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,
@@ -55,14 +43,11 @@ class ArticlesController {
             });
         }
     }
-
+    /** function getAllArticles => renvoie à la méthode articlesService.getArticles */
     async getAllArticles(req, res) {
 
-
         try {
-
             const articles = await articlesService.getArticles();
-
 
             res.status(200).json({
                 status: "OK",
@@ -71,21 +56,19 @@ class ArticlesController {
             });
 
         } catch (err) {
-
             res.status(500).json({
                 status: "ERROR",
                 data: undefined,
                 message: "une erreur est survenue"
             });
         }
-
     }
+    /** function getByArticle => renvoie à la méthode articlesService.getOneArticle */
     async getByArticle(req, res) {
 
         const id = req.params.id;
 
         try {
-
             const article = await articlesService.getOneArticle(id);
 
             if (id) {
@@ -96,25 +79,22 @@ class ArticlesController {
                 });
 
             } else {
-
                 res.status(404).json({
                     status: "NOT FOUND",
                     data: undefined,
                     message: "l'article' n'existe pas",
-
                 });
             }
 
         } catch (err) {
-
             res.status(500).json({
                 status: "ERROR",
                 data: undefined,
                 message: "erreur serveur",
             });
         }
-
     }
+    /** function updateArticle => renvoie à la méthode articlesService.getOneArticle + articlesService.updateArticle */
     async updateArticle(req, res) {
 
         const userId = req.userId;
@@ -122,10 +102,7 @@ class ArticlesController {
         const message = req.body.message;
         const id = req.params.id;
 
-
-
         if (!message || typeof (message) !== "string") {
-
             res.status(400).json({
                 status: "FAIL",
                 data: undefined,
@@ -137,30 +114,24 @@ class ArticlesController {
         const articleExist = await articlesService.getOneArticle(id);
 
         if (!articleExist) {
-
             res.status(404).json({
                 status: "NOT FOUND",
                 data: undefined,
                 message: "l'article n'existe pas"
             });
-
             return;
         }
 
         if (articleExist.user_id !== userId) {
-
             res.status(401).json({
                 status: "FAIL",
                 data: undefined,
                 message: "non autorisé"
             });
-
             return;
-
-
         }
-        try {
 
+        try {
             const data = await articlesService.updateArticle(id, title, message);
 
 
@@ -173,15 +144,14 @@ class ArticlesController {
             }
 
         } catch (err) {
-
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,
                 message: "erreur serveur",
             });
         }
-
     }
+    /** function deleteArticle => renvoie à la méthode articlesService.getOneArticle + articlesService.deleteArticle */
     async deleteArticle(req, res) {
 
         const id = req.params.id;
@@ -190,61 +160,43 @@ class ArticlesController {
         const articleExist = await articlesService.getOneArticle(id);
 
         if (!articleExist) {
-
             res.status(404).json({
-
                 status: "NOT FOUND",
                 data: undefined,
                 message: "l'article n'existe pas",
             });
-
             return;
-
         }
 
         if (articleExist.user_id !== userId) {
-
             res.status(401).json({
                 status: "ERREUR",
                 data: null,
                 message: "non autorisé"
             });
-
             return;
         }
 
         try {
-
             const data = await articlesService.deleteArticle(id);
 
             if (data) {
-
                 res.status(200).json({
                     status: "OK",
                     data: data,
                     message: "SUPPRESSION ARTICLE EFFECTUEE"
                 });
-
             };
 
-        } catch (err) {
-
+        }
+        catch (err) {
             res.status(500).json({
                 status: "FAIL",
                 data: undefined,
                 message: "erreur serveur",
             });
         }
-
-
-
-
-
     }
-
-
-
 }
-
 
 module.exports = ArticlesController;
