@@ -71,7 +71,7 @@ class ArticlesController {
         try {
             const article = await articlesService.getOneArticle(id);
 
-            if (id) {
+            if (article) {
                 res.status(200).json({
                     status: "OK",
                     data: article,
